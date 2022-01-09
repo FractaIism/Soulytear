@@ -1,6 +1,7 @@
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, User
 from telegram.ext import Filters, Updater, Dispatcher, CommandHandler, MessageHandler, CallbackQueryHandler, CallbackContext
+from telegram.error import InvalidToken
 from enum import Enum, auto
 
 from config import TG_BOT_TOKEN
@@ -27,8 +28,12 @@ class TelegramBot:
     def __init__(self) -> None:
         """ Initialize stuff. """
         # set up updater, dispatcher, and logging
-        self.updater = Updater(token = TG_BOT_TOKEN, use_context = True)
         logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(message)s', level = logging.INFO)
+        try:
+            self.updater = Updater(token = TG_BOT_TOKEN, use_context = True)
+        except InvalidToken:
+            logging.error("Enter your telegram bot access token into config.py TG_BOT_TOKEN variable first!")
+            exit()
         # set up and register handlers
         # NOTE: command handlers by default also trigger when a command is edited
         # NOTE: in that case, update.message == None, so we need to use update.effective_message instead
