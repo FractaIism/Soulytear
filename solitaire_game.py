@@ -3,7 +3,7 @@ import random
 from dataclasses import dataclass
 from collections import deque
 
-from config import DEBUG
+from config import DEBUG, FACE_DOWN_CARD_ICON
 
 class icons:
     SPADE = "♠"
@@ -22,7 +22,7 @@ class Card:
     visible: bool = False if not DEBUG else True
 
     def __str__(self):
-        return f"{suits[self.suit]}{self.rank}" if self.visible else "*"
+        return f"{suits[self.suit]}{self.rank}" if self.visible else FACE_DOWN_CARD_ICON
 
 class InvalidMoveError(Exception):
     pass
